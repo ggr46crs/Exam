@@ -14,7 +14,7 @@ public class SubjectDao extends Dao {
 
 	private String baseSql = "select * from subject where school_cd=? ";
 
-	public Subject get(String code) throws Exception {
+	public Subject get(String cd) throws Exception {
 		//学生インスタンスを初期化
 		Subject subject = new Subject();
 		//データベースへのコネクションを確立
@@ -24,9 +24,9 @@ public class SubjectDao extends Dao {
 
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("select * from subject where code=?");
+			statement = connection.prepareStatement("select * from subject where cd=?");
 			//プリペアードステートメントに学生番号をバインド
-			statement.setString(1, code);
+			statement.setString(1, cd);
 			//プリペアードステートメントを実行
 			ResultSet rSet = statement.executeQuery();
 
@@ -36,7 +36,7 @@ public class SubjectDao extends Dao {
 			if (rSet.next()) {
 				//リザルトセットが存在する場合
 				//学生インスタンスに検索結果をセット
-				subject.setCode(rSet.getString("code"));
+				subject.setCd(rSet.getString("cd"));
 				subject.setName(rSet.getString("name"));
 				//学校フィールドには学校コードで検索した学校インスタンスをセット
 				subject.setSchool(schoolDao.get(rSet.getString("school_cd")));
@@ -78,7 +78,7 @@ public class SubjectDao extends Dao {
 				//学生インスタンスを初期化
 				Subject subject = new Subject();
 				//学生インスタンスに検索結果をセット
-				subject.setCode(rSet.getString("code"));
+				subject.setCd(rSet.getString("cd"));
 				subject.setName(rSet.getString("name"));
 				subject.setSchool(school);
 				//リストに追加
@@ -105,12 +105,10 @@ public class SubjectDao extends Dao {
 		//SQL文のソート
 		String order = " order by cd asc";
 
-		//SQL文の在学フラグ条件
-		String conditionIsAttend = "";
 		//在学フラグがtrueの場合
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement(baseSql + conditionIsAttend + order);
+			statement = connection.prepareStatement(baseSql + order);
 			//プリペアードステートメントに学校コードをバインド
 			statement.setString(1, school.getCd());
 			//プライベートステートメントを実行
@@ -152,24 +150,24 @@ public class SubjectDao extends Dao {
 
 		try {
 			//データベースから学年を取得
-			Subject old = get(subject.getCode());
+			Subject old = get(subject.getCd());
 			if (old == null) {
 				//学年が存在しなかった場合
 				//プリペアードステートメントにINSERT文をセット
 				statement = connection.prepareStatement(
-						"insert into subject(code, name,school_cd) values(?, ?, ?)");
+						"insert into subject(cd, name,school_cd) values(?, ?, ?)");
 				//プリペアードステートメントに値をバインド
-				statement.setString(1, subject.getCode());
+				statement.setString(1, subject.getCd());
 				statement.setString(2, subject.getName());
 				statement.setString(3, subject.getSchool().getCd());
 			} else {
 				//学生が存在した場合
 				//プリペアードステートメントにUPDATE文をセット
 				statement = connection
-						.prepareStatement("update subject set name =? where code=?");
+						.prepareStatement("update subject set name =? where cd=?");
 				//プリペアードステートメントに値をバインド
 				statement.setString(1, subject.getName());
-				statement.setString(2, subject.getCode());
+				statement.setString(2, subject.getCd());
 			}
 
 			//プリペアードステートメントを実行

@@ -3,14 +3,14 @@ package bean;
 import java.io.Serializable;
 
 public class Subject implements Serializable {
-	private String code;
+	private String cd;
 	private String name;
 	private School school;
-	public String getCode() {
-		return code;
+	public String getCd() {
+		return cd;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setCd(String cd) {
+		this.cd = cd;
 	}
 	public String getName() {
 		return name;
