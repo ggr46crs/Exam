@@ -20,7 +20,7 @@ public class StudentListAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		School school = new School();
-		school.setCd("tes");
+		school.setCd("oom");
 		school.setName("テスト校");
 
 		Teacher teacher = new Teacher();

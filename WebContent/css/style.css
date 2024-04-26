@@ -1,0 +1,10 @@
+.form-input {
+	width:300%
+}
+.btn-seco {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+.field {
+	display: flex;
+}

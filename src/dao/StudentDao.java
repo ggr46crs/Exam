@@ -85,7 +85,7 @@ public class StudentDao extends Dao {
 				student.setNo(rSet.getString("no"));
 				student.setName(rSet.getString("name"));
 				student.setEntYear(rSet.getInt("ent_year"));
-				student.setClassNum(rSet.getString("classNum"));
+				student.setClassNum(rSet.getString("class_num"));
 				student.setAttend(rSet.getBoolean("is_attend"));
 				student.setSchool(school);
 				//リストに追加
@@ -335,4 +335,37 @@ public class StudentDao extends Dao {
 
 	}
 
+	public void delete(int no) throws Exception {
+		//コネクションを確立
+		Connection connection = getConnection();
+		//プリペアードステートメント
+		PreparedStatement statement = null;
+		try {
+			//データベースから学年を取得
+
+			statement = connection
+					.prepareStatement("delete from student where no=?");
+			//プリペアードステートメントに値をバインド
+			statement.setInt(1, no);
+			} catch (Exception e) {
+				throw e;
+			} finally {
+				//プリペアードステートメントを閉じる
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException sqle) {
+						throw sqle;
+					}
+				}
+				//コネクションを閉じる
+				if (connection != null) {
+					try {
+						connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+	}
 }
