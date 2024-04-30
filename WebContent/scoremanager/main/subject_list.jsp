@@ -1,4 +1,4 @@
-<%-- 学生一覧JSP --%>
+<%-- 科目一覧JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -22,6 +22,7 @@
 					<th></th>
 					<th></th>
 				</tr>
+
 				<c:forEach var="subject" items="${subjects}">
 					<tr>
 						<td>${subject.cd}</td>

@@ -35,11 +35,12 @@ public class SubjectListAction extends Action {
 
 		subjects = sDao.filter(teacher.getSchool());
 
+
 		//リストを初期化
 		//レスポンス値をセット 5
 		// リクエストに入学年度をセット
 
-		req.setAttribute("students", subjects);
+		req.setAttribute("subjects", subjects);
 		// リクエストにデータをセット
 		req.getRequestDispatcher("subject_list.jsp").forward(req, res);
 

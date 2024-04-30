@@ -105,7 +105,6 @@ public class SubjectDao extends Dao {
 		//SQL文のソート
 		String order = " order by cd asc";
 
-		//在学フラグがtrueの場合
 		try {
 			//プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement(baseSql + order);
