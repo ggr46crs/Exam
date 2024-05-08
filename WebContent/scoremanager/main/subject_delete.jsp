@@ -14,9 +14,7 @@
 					<div class="col-4">
 						<label class="form-label" for="student-f1-select">「${name_set}(${cd_set})」を削除してもよろしいですか</label>
 						<div class="btn-seco">
-							<input type="text" name="cd"value="${cd_set}" />
-							<input type="submit" value="削除"><br>
-							<%= request.getAttribute("cd")%>
+							<button class="btn btn-primary" name="cd"value="${cd_set}">削除</button><br>
 							<a href="SubjectList.action">戻る</a>
 						</div>
 					</div>
