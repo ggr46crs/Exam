@@ -44,7 +44,6 @@ public class SubjectDeleteExecuteAction extends Action {
 		cd = req.getParameter("cd");//学生番号
 		name = req.getParameter("name");
 
-		System.out.println("★ cd -> " + cd);
 
 
 		subject = new Subject();
