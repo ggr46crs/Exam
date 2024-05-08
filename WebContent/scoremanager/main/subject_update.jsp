@@ -13,10 +13,10 @@
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 			<form method="post" action="SubjectUpdateExecute.action">
 				<div class="col-4">
-					<label class="form-label" for="subject-f1-select">学生番号</label>
+					<label class="form-label" for="subject-f1-select">科目コード</label>
 					<div class="form-input"><input class="form-control" type="text" name="cd" value="${cd_set}" readonly></div>
 
-					<label class="form-label" for="subject-f1-select">氏名</label>
+					<label class="form-label" for="subject-f1-select">科目名</label>
 					<div class="form-input"><input class="form-control" type="text" name="name" value="${name_set}" required></div>
 
 					<div class="btn-seco">
