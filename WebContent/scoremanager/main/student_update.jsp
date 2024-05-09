@@ -1,3 +1,4 @@
+
 <%-- 学生登録JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -41,4 +42,5 @@
 			</form>
 		</section>
 	</c:param>
+>>>>>>> branch 'master' of https://github.com/ggr46crs/Exam.git
 </c:import>
