@@ -264,6 +264,54 @@ public class StudentDao extends Dao {
 		return list;
 	}
 
+	public List<Student> filter(School school, int entYear) throws Exception {
+		//リストを初期化
+		List<Student> list = new ArrayList<>();
+		//コネクションを確立
+		Connection connection = getConnection();
+		//プリペアードステートメント
+		PreparedStatement statement = null;
+		//リザルトセット
+		ResultSet rSet = null;
+
+		String condition = "and ent_year=? ";
+		//SQL文のソート
+		String order = " order by no asc";
+
+		try {
+			//プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement(baseSql + condition + order);
+			//プリペアードステートメントに学校コードをバインド
+			statement.setString(1, school.getCd());
+			statement.setInt(2, entYear);
+			//プライベートステートメントを実行
+			rSet = statement.executeQuery();
+			//リストへの格納処理を実行
+			list = postFilter(rSet, school);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			//プリペアードステートメントを閉じる
+			if(statement != null) {
+				try{
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			//コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
+	}
+
 	public boolean save(Student student) throws Exception {
 		//コネクションを確立
 		Connection connection = getConnection();
