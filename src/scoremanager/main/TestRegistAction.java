@@ -80,8 +80,7 @@ public class TestRegistAction extends Action {
 		// リクエストに入学年度をセット
 		req.setAttribute("f1", student_no);
 		// リクエストにクラス番号をセット
-		req.setAttribute("f2", subject_cd);
-		// 在学フラグが送信されていた場合
+		req.setAttribute("f2", subjects);
 		req.setAttribute("f3", school_cd);
 		req.setAttribute("f4", no);
 
@@ -90,11 +89,10 @@ public class TestRegistAction extends Action {
 		// リクエストにデータをセット
 		req.setAttribute("ent_year_set", entYearSet);
 		req.setAttribute("class_num_set", cNumlist);
-		req.setAttribute("subjects", subjects);
+		req.setAttribute("subject_cd_set", subjects);
+		//req.setAttribute("subjects", subjects);
 		//JSPへフォワード 7
 		req.getRequestDispatcher("test_regist.jsp").forward(req, res);
 
 	}
-
-
 }

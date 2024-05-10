@@ -32,6 +32,6 @@
 					</tr>
 				</c:forEach>
 			</table>
-	</section>
-</c:param>
+		</section>
+	</c:param>
 </c:import>
