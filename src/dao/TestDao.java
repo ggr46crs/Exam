@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
-import bean.Student;
 import bean.Test;
 
 public class TestDao extends Dao {
@@ -102,7 +101,7 @@ public class TestDao extends Dao {
 		return list;
 	}
 
-	public List<Test> filter(School school, String student_no,String subject_cd,String school_cd,int no) throws Exception {
+	public List<Test> filter(School school, String student_no,String subject_cd,int no) throws Exception {
 		//リストを初期化
 		List<Test> list = new ArrayList<>();
 		//コネクションを確立
@@ -112,7 +111,7 @@ public class TestDao extends Dao {
 		//リザルトセット
 		ResultSet rSet = null;
 		//SQL文の条件
-		String condition = "and ent_year=? and class_num=?";
+		String condition = "and student_no=? and subject_cd=? and no=?";
 		//SQL文のソート
 		String order = " order by no asc";
 
@@ -151,10 +150,9 @@ public class TestDao extends Dao {
 
 		return list;
 	}
-
-	public List<Student> filter(School school, int entYear, boolean isAttend) throws Exception {
+	public List<Test> filter(School school, String student_no,String subject_cd) throws Exception {
 		//リストを初期化
-		List<Student> list = new ArrayList<>();
+		List<Test> list = new ArrayList<>();
 		//コネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
@@ -162,24 +160,17 @@ public class TestDao extends Dao {
 		//リザルトセット
 		ResultSet rSet = null;
 		//SQL文の条件
-		String condition = "and ent_year=? ";
+		String condition = "and student_no=? and subject_cd=?";
 		//SQL文のソート
 		String order = " order by no asc";
 
-		//SQL文の在学フラグ条件
-		String conditionIsAttend = "";
-		//在学フラグがtrueの場合
-		if (isAttend) {
-			conditionIsAttend = "and is_attend=true";
-		}
-
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement(baseSql + condition + conditionIsAttend + order);
+			statement = connection.prepareStatement(baseSql + condition + order);
 			//プリペアードステートメントに学校コードをバインド
-			statement.setString(1, school.getCd());
-			//プリペアードステートメントに入学年度をバインド
-			statement.setInt(2, entYear);
+			statement.setString(1, student_no);
+			statement.setString(2, subject_cd);
+			statement.setString(3, school.getCd());
 			//プライベートステートメントを実行
 			rSet = statement.executeQuery();
 			//リストへの格納処理を実行
@@ -207,41 +198,46 @@ public class TestDao extends Dao {
 
 		return list;
 	}
-
-	public List<Student> filter(School school, boolean isAttend) throws Exception {
-		//リストを初期化
-		List<Student> list = new ArrayList<>();
-		//コネクションを確立
+	public Test noget(String student_no) throws Exception {
+		//学生インスタンスを初期化
+		Test test = new Test();
+		//データベースへのコネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
 		PreparedStatement statement = null;
-		//リザルトセット
-		ResultSet rSet = null;
-		//SQL文のソート
-		String order = " order by no asc";
-
-		//SQL文の在学フラグ条件
-		String conditionIsAttend = "";
-		//在学フラグがtrueの場合
-		if (isAttend) {
-			conditionIsAttend = "and is_attend=true";
-		}
 
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement(baseSql + conditionIsAttend + order);
-			//プリペアードステートメントに学校コードをバインド
-			statement.setString(1, school.getCd());
-			//プライベートステートメントを実行
-			rSet = statement.executeQuery();
-			//リストへの格納処理を実行
-			list = postFilter(rSet, school);
+			statement = connection.prepareStatement("select * from student where student_no=?");
+			//プリペアードステートメントに学生番号をバインド
+			statement.setString(1, student_no);
+			//プリペアードステートメントを実行
+			ResultSet rSet = statement.executeQuery();
+
+			//学校Daoを初期化
+			SchoolDao schoolDao = new SchoolDao();
+
+			if (rSet.next()) {
+				//リザルトセットが存在する場合
+				//学生インスタンスに検索結果をセット
+				test.setStudent_no(rSet.getString("student_no"));
+				test.setSubject_cd(rSet.getString("subject_cd"));
+				test.setSchool_cd(rSet.getString("school_cd"));
+				test.setNo(rSet.getInt("no"));
+				test.setPoint(rSet.getInt("point"));
+				//学校フィールドには学校コードで検索した学校インスタンスをセット
+				test.setSchool(schoolDao.get(rSet.getString("school_cd")));
+			} else {
+				//リザルトセットが存在しない場合
+				//学生インスタンスにnullをセット
+				test = null;
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
 			//プリペアードステートメントを閉じる
-			if(statement != null) {
-				try{
+			if (statement != null) {
+				try {
 					statement.close();
 				} catch (SQLException sqle) {
 					throw sqle;
@@ -257,10 +253,10 @@ public class TestDao extends Dao {
 			}
 		}
 
-		return list;
+		return test;
 	}
-
-	public boolean save(Student student) throws Exception {
+/**
+	public boolean save(Test test) throws Exception {
 		//コネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
@@ -270,7 +266,7 @@ public class TestDao extends Dao {
 
 		try {
 			//データベースから学年を取得
-			Student old = get(student.getNo());
+			Test old = get(test.getStudent_no(),test.getSubject_cd(),test.getSchool_cd(),test.getNo());
 			if (old == null) {
 				//学年が存在しなかった場合
 				//プリペアードステートメントにINSERT文をセット
@@ -364,4 +360,5 @@ public class TestDao extends Dao {
 			}
 		}
 	}
+**/
 }
