@@ -14,11 +14,12 @@ import dao.ClassNumDao;
 import dao.SubjectDao;
 import tool.Action;
 
-public class SubjectDeleteAction extends Action {
+public class SubjectDeleteExecuteAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		//ローカル変数の宣言 1
+
 		School school = new School();
 		school.setCd("oom");
 		school.setName("テスト校");
@@ -41,17 +42,18 @@ public class SubjectDeleteAction extends Action {
 
 		//リクエストパラメータ―の取得 2
 		cd = req.getParameter("cd");//学生番号
+		name = req.getParameter("name");
 
-		//DBからデータ取得 3
-		subject = sDao.get(cd);// 学生番号から学生インスタンスを取得
-		subjects = sDao.filter(teacher.getSchool());
 
-		name = subject.getName();
 
-		req.setAttribute("cd_set", cd);
-		req.setAttribute("name_set", name);
+		subject = new Subject();
+		subject.setCd(cd);
+		subject.setName(name);
+		subject.setSchool(school);
+		//student.setSchool(((Teacher)session.getAttribute("user")).getSchool());
+		sDao.delete(subject);
 
-		req.getRequestDispatcher("subject_delete.jsp").forward(req, res);
 
+		req.getRequestDispatcher("subject_delete_done.jsp").forward(req, res);
 	}
 }

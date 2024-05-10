@@ -41,7 +41,7 @@ public class StudentUpdateExecuteAction extends Action {
 		no = req.getParameter("no");//学生番号
 		name = req.getParameter("name");//氏名
 		classNum = req.getParameter("class_num");//クラス番号
-		isAttendStr = req.getParameter("si_attend");
+		isAttendStr = req.getParameter("is_attend");
 		if(isAttendStr!=null){
 			isAttend = true;
 		}

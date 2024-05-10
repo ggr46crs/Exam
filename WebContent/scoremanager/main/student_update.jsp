@@ -1,3 +1,4 @@
+
 <%-- 学生登録JSP --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -30,7 +31,7 @@
 					</div>
 					<label class="form-check-label" >在学中
 					<input class="form-check-input" type="checkbox"
-							name="si_attend" value="t"
+							name="is_attend" value="t"
 							<c:if test="${isAttend_set==true}">checked</c:if>>
 					</label>
 					<div class="btn-seco">
@@ -41,4 +42,5 @@
 			</form>
 		</section>
 	</c:param>
+>>>>>>> branch 'master' of https://github.com/ggr46crs/Exam.git
 </c:import>
