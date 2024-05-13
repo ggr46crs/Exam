@@ -60,7 +60,7 @@ public class TestListSubjectDao extends Dao {
 		//リザルトセット
 		ResultSet rSet = null;
 		//SQL文の条件
-		String condition = "inner join student on test.student_no = student.no where ent_year=? and test.class_num=? and subject_cd=? and school_cd=?";
+		String condition = "inner join student on test.student_no = student.no where ent_year=? and test.class_num=? and subject_cd=? and test.school_cd=?";
 		//SQL文のソート
 		String order = " order by ent_year asc";
 

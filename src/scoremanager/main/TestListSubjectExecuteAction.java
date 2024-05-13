@@ -42,6 +42,7 @@ public class TestListSubjectExecuteAction extends Action {
 		List<TestListSubject> tests = null;//学生
 		ClassNumDao cNumDao = new ClassNumDao();// クラス番号Daoを初期化
 		SubjectDao subDao = new SubjectDao();
+		TestListSubjectDao tesDao = new TestListSubjectDao();
 		//Teacher teacher = (Teacher) session.getAttribute("user");// ログインユーザーを取得
 		LocalDate todaysDate = LocalDate.now();// LcalDateインスタンスを取得
 		int year = todaysDate.getYear();// 現在の年を取得
@@ -55,7 +56,7 @@ public class TestListSubjectExecuteAction extends Action {
 
 		//DBからデータ取得 3
 
-		tests = TestListSubjectDao.filter(f1,f2,f3,teacher.getSchool());
+		tests = tesDao.filter(f1,f2,f3,teacher.getSchool());
 		List<String> list1 = cNumDao.filter(teacher.getSchool());
 		List<String> value = subDao.filter_name(teacher.getSchool());
 		List<String> key = subDao.filter_cd(teacher.getSchool());
@@ -63,16 +64,6 @@ public class TestListSubjectExecuteAction extends Action {
 				.boxed()
 				.collect(Collectors.toMap(key::get, value::get));
 
-/*		if (tests.size() != 0){
-			tests2.add(tests.get(0));
-			for (int j = 1;j < tests.size();j++) {
-				if(tests.get(j).getPoint(j) == "1" && tests.get(j).getStudentNo() == tests.get(j-1).getStudentNo() && tests.get(j).getSubjectCd() == tests.get(j-1).getSubjectCd()){
-					tests2.get(j-1).setPoint2(tests.get(j).getPoint());
-				}else{
-					tests2.add(tests.get(j));
-				}
-			}
-		}*/
 
 
 		//ビジネスロジック 4
