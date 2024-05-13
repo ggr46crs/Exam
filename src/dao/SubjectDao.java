@@ -203,18 +203,19 @@ public class SubjectDao extends Dao {
 		}
 
 	}
-	public void delete(String no) throws Exception {
+	public boolean delete(Subject subject) throws Exception {
 		//コネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
 		PreparedStatement statement = null;
+		//実行件数
+		int count = 0;
 		try {
 			//データベースから学年を取得
 
-			statement = connection
-					.prepareStatement("delete from subject where no=?");
+			statement = connection.prepareStatement("delete from subject where cd = ? ");
 			//プリペアードステートメントに値をバインド
-			statement.setString(1, no);
+			statement.setString(1, subject.getCd());
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -234,6 +235,13 @@ public class SubjectDao extends Dao {
 					throw sqle;
 				}
 			}
+		}
+		if (count > 0) {
+			//実行件数が１件以上ある場合
+			return true;
+		} else {
+			//実行件数が0件の場合
+			return false;
 		}
 	}
 

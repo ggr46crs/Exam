@@ -62,7 +62,7 @@ public class TestRegistAction extends Action {
 		List<String> cNumlist = cNumDao.filter(teacher.getSchool());
 		subjects = subDao.filter(teacher.getSchool());
 
-		tests = tDao.filter(teacher.getSchool(), student_no, subject_cd, no);
+
 
 		//ビジネスロジック 4
 		if (nostr != null) {
@@ -74,6 +74,11 @@ public class TestRegistAction extends Action {
 		//10年前から1年後まで年をリストに追加
 		for (int i = year - 10; i < year + 1; i++) {
 			entYearSet.add(i);
+		}
+		List<Integer> noSet = new ArrayList<>();
+		//10年前から1年後まで年をリストに追加
+		for (int i = 1; i < 10 ; i++) {
+			noSet.add(i);
 		}
 
 		//レスポンス値をセット 5
@@ -90,6 +95,7 @@ public class TestRegistAction extends Action {
 		req.setAttribute("ent_year_set", entYearSet);
 		req.setAttribute("class_num_set", cNumlist);
 		req.setAttribute("subject_cd_set", subjects);
+		req.setAttribute("no_set", noSet);
 		//req.setAttribute("subjects", subjects);
 		//JSPへフォワード 7
 		req.getRequestDispatcher("test_regist.jsp").forward(req, res);
