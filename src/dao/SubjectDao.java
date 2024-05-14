@@ -212,10 +212,11 @@ public class SubjectDao extends Dao {
 		int count = 0;
 		try {
 			//データベースから学年を取得
-
 			statement = connection.prepareStatement("delete from subject where cd = ? ");
 			//プリペアードステートメントに値をバインド
 			statement.setString(1, subject.getCd());
+
+			statement.executeUpdate();
 			} catch (Exception e) {
 				throw e;
 			} finally {
