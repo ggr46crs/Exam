@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import bean.School;
 import bean.Subject;
 import bean.Teacher;
-import bean.Test;
+import bean.TestListSubject;
 import dao.ClassNumDao;
 import dao.SubjectDao;
 import dao.TestDao;
@@ -34,6 +34,10 @@ public class TestRegistAction extends Action {
 		//HttpSession session = req.getSession();//セッション
 		//Teacher teacher = (Teacher)session.getAttribute("user");
 
+		int f1;//入学年度
+		String f2 = "";//クラス番号
+		String f3 = "";//科目コード
+		int f4;
 		String entYearStr="";//入力された入学年度
 		String classNum = "";//入力されたクラス番号
 		int entYear = 0;// 入学年度
@@ -42,7 +46,7 @@ public class TestRegistAction extends Action {
 		String school_cd = "";
 		String nostr = "";
 		int no = 0;// 入学年度
-		List<Test> tests = null;// 学生リスト
+		List<TestListSubject> tests = null;// 学生リスト
 		List<Subject> subjects = null;// 学生リスト
 		LocalDate todaysDate = LocalDate.now();// LocalDateインスタンスを取得
 		int year = todaysDate.getYear();// 現在の年を取得
@@ -50,12 +54,6 @@ public class TestRegistAction extends Action {
 		TestDao tDao = new TestDao();//学生Dao
 		ClassNumDao cNumDao = new ClassNumDao();// クラス番号Daoを初期化
 		Map<String, String> errors = new HashMap<>();//エラーメッセージ
-
-		//リクエストパラメーターの取得 2
-		entYearStr = req.getParameter("f1");
-		classNum = req.getParameter("f2");
-		subject_cd = req.getParameter("f3");
-		nostr = req.getParameter("f4");
 
 		//DBからデータ取得 3
 		// ログインユーザーの学校コードをもとにクラス番号の一覧を取得
@@ -83,15 +81,15 @@ public class TestRegistAction extends Action {
 
 		//レスポンス値をセット 5
 		// リクエストに入学年度をセット
-		req.setAttribute("f1", student_no);
-		// リクエストにクラス番号をセット
-		req.setAttribute("f2", subjects);
-		req.setAttribute("f3", school_cd);
-		req.setAttribute("f4", no);
+		f1 = Integer.parseInt(req.getParameter("f1"));//入学年度
+		f2 = req.getParameter("f2");//クラス番号
+		f3 = req.getParameter("f3");//科目コード
+		f4 = Integer.parseInt(req.getParameter("f4"));//回数
+
+		tests = tDao.filter(f1,f2,f3,teacher.getSchool());
 
 		// リクエストに学年リストをセット
-		req.setAttribute("students", tests);
-		// リクエストにデータをセット
+		req.setAttribute("tests", tests);
 		req.setAttribute("ent_year_set", entYearSet);
 		req.setAttribute("class_num_set", cNumlist);
 		req.setAttribute("subject_cd_set", subjects);

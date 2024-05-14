@@ -11,22 +11,22 @@ public class Test implements Serializable {
 	private String class_num;
 	private School school;
 
-	public String getStudent_no() {
+	public String getStudentNo() {
 		return student_no;
 	}
-	public void setStudent_no(String student_no) {
+	public void setStudentNo(String student_no) {
 		this.student_no = student_no;
 	}
-	public String getSubject_cd() {
+	public String getSubjectCd() {
 		return subject_cd;
 	}
-	public void setSubject_cd(String subject_cd) {
+	public void setSubjectCd(String subject_cd) {
 		this.subject_cd = subject_cd;
 	}
-	public String getSchool_cd() {
+	public String getSchoolCd() {
 		return school_cd;
 	}
-	public void setSchool_cd(String school_cd) {
+	public void setSchoolCd(String school_cd) {
 		this.school_cd = school_cd;
 	}
 	public Integer getNo() {
@@ -41,10 +41,10 @@ public class Test implements Serializable {
 	public void setPoint(Integer point) {
 		this.point = point;
 	}
-	public String getClass_num() {
+	public String getClassNum() {
 		return class_num;
 	}
-	public void setClass_num(String class_num) {
+	public void setClassNum(String class_num) {
 		this.class_num = class_num;
 	}
 	public School getSchool() {

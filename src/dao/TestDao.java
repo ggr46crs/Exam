@@ -5,16 +5,104 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import bean.School;
 import bean.Test;
-
-
-
+import bean.TestListSubject;
 
 public class TestDao extends Dao{
 
+	private String baseSql = "select * from test ";
 
-public Test noget(String student_no) throws Exception {
+
+
+	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
+		//リストを初期化
+		List<TestListSubject> list = new ArrayList<>();
+		try {
+			//リザルトセットを全権操作
+			while (rSet.next()) {
+				//学生インスタンス
+				TestListSubject test = new TestListSubject();
+				//学生インスタンスに検索結果をセット
+				test.setEntYear(rSet.getInt("ent_year"));
+				test.setStudentNo(rSet.getString("student_no"));
+				test.setStudentName(rSet.getString("name"));
+				test.setClassNum(rSet.getString("class_num"));
+				//リストに追加
+				test.putPoint(rSet.getInt("no"), rSet.getInt("point"));
+				rSet.next();
+				if(rSet.getInt("no")==2){
+					test.putPoint(rSet.getInt("no"), rSet.getInt("point"));
+				} else {
+					rSet.previous();
+				}
+				list.add(test);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+
+	public List<TestListSubject> filter(int ent_year, String classNum, String subject, School school) throws Exception {
+		//リストを初期化
+		List<TestListSubject> list = new ArrayList<>();
+		//コネクションを確立
+		Connection connection = getConnection();
+		//プリペアードステートメント
+		PreparedStatement statement = null;
+		//リザルトセット
+		ResultSet rSet = null;
+		//SQL文の条件
+		String condition = "inner join student on test.student_no = student.no where ent_year=? and test.class_num=? and subject_cd=? and test.school_cd=?";
+		//SQL文のソート
+		String order = " order by ent_year asc";
+
+
+		try {
+			//プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement(baseSql + condition + order);
+			//プリペアードステートメントに学校コードをバインド
+			statement.setInt(1, ent_year);
+			//プリペアードステートメントに入学年度をバインド
+			statement.setString(2, classNum);
+			//プリペアードステートメントにクラス番号をバインド
+			statement.setString(3,subject);
+
+			statement.setString(4, school.getCd());
+			//プライベートステートメントを実行
+			rSet = statement.executeQuery();
+			//リストへの格納処理を実行
+			list = postFilter(rSet);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			//プリペアードステートメントを閉じる
+			if(statement != null) {
+				try{
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			//コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+		}
+
+		return list;
+	}
+	public Test get(String student_no) throws Exception {
 		//学生インスタンスを初期化
 		Test test = new Test();
 		//データベースへのコネクションを確立
@@ -70,110 +158,5 @@ public Test noget(String student_no) throws Exception {
 		}
 
 		return test;
-	}
-
-	public boolean save(Test test) throws Exception {
-		//コネクションを確立
-		Connection connection = getConnection();
-		//プリペアードステートメント
-		PreparedStatement statement = null;
-		//実行件数
-		int count = 0;
-
-		try {
-			//データベースから学年を取得
-			Test old = get(test.getStudent_no(),test.getSubject_cd(),test.getSchool_cd(),test.getNo());
-			if (old == null) {
-				//学年が存在しなかった場合
-				//プリペアードステートメントにINSERT文をセット
-				statement = connection.prepareStatement(
-						"insert into student(no, name, ent_year, class_num, is_attend, school_cd) values(?, ?, ?, ?, ?, ?)");
-				//プリペアードステートメントに値をバインド
-				statement.setString(1, student.getNo());
-				statement.setString(2, student.getName());
-				statement.setInt(3, student.getEntYear());
-				statement.setString(4, student.getClassNum());
-				statement.setBoolean(5, student.isAttend());
-				statement.setString(6, student.getSchool().getCd());
-			} else {
-				//学生が存在した場合
-				//プリペアードステートメントにUPDATE文をセット
-				statement = connection
-						.prepareStatement("update student set name =?, ent_year=?, class_num=?, is_attend=? where no=?");
-				//プリペアードステートメントに値をバインド
-				statement.setString(1, student.getName());
-				statement.setInt(2, student.getEntYear());
-				statement.setString(3, student.getClassNum());
-				statement.setBoolean(4, student.isAttend());
-				statement.setString(5, student.getNo());
-			}
-
-			//プリペアードステートメントを実行
-			count = statement.executeUpdate();
-
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			//プリペアードステートメントを閉じる
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-			//コネクションを閉じる
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
-
-
-		if (count > 0) {
-			//実行件数が１件以上ある場合
-			return true;
-		} else {
-			//実行件数が0件の場合
-			return false;
-		}
-
-	}
-
-	public void delete(int no) throws Exception {
-		//コネクションを確立
-		Connection connection = getConnection();
-		//プリペアードステートメント
-		PreparedStatement statement = null;
-		try {
-			//データベースから学年を取得
-
-			statement = connection
-					.prepareStatement("delete from student where no=?");
-			//プリペアードステートメントに値をバインド
-			statement.setInt(1, no);
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				//プリペアードステートメントを閉じる
-				if (statement != null) {
-					try {
-						statement.close();
-					} catch (SQLException sqle) {
-						throw sqle;
-					}
-				}
-				//コネクションを閉じる
-				if (connection != null) {
-					try {
-						connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
 	}
 }

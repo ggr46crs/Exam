@@ -82,8 +82,9 @@
 							<tr>
 								<td>${test.entYear}</td>
 								<td>${test.classNum}</td>
-								<td>${test.no}</td>
+								<td>${test.studentNo}</td>
 								<td>${test.name}</td>
+								<td>${test.point}</td>
 							</tr>
 						</c:forEach>
 					</table>
