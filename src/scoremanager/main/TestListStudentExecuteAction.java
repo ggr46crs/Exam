@@ -12,10 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import bean.School;
 import bean.Teacher;
-import bean.TestListSubject;
+import bean.TestListStudent;
 import dao.ClassNumDao;
+import dao.StudentDao;
 import dao.SubjectDao;
-import dao.TestDao;
+import dao.TestListStudentDao;
 import tool.Action;
 
 public class TestListStudentExecuteAction extends Action {
@@ -37,10 +38,11 @@ public class TestListStudentExecuteAction extends Action {
 		//HttpSession session = req.getSession();//セッション
 
 		String f4 = "";
-		List<TestListSubject> tests = null;//学生
-		TestDao tDao = new TestDao();
+		List<TestListStudent> tests = null;//学生
+		TestListStudentDao tesDao = new TestListStudentDao();
 		ClassNumDao cNumDao = new ClassNumDao();// クラス番号Daoを初期化
 		SubjectDao subDao = new SubjectDao();
+		StudentDao sDao = new StudentDao();
 		//Teacher teacher = (Teacher) session.getAttribute("user");// ログインユーザーを取得
 		LocalDate todaysDate = LocalDate.now();// LcalDateインスタンスを取得
 		int year = todaysDate.getYear();// 現在の年を取得
@@ -52,7 +54,7 @@ public class TestListStudentExecuteAction extends Action {
 
 		//DBからデータ取得 3
 
-		tests = tDao.filter(f4);
+		tests = tesDao.filter(sDao.get(f4));
 		List<String> list1 = cNumDao.filter(teacher.getSchool());
 		List<String> value = subDao.filter_name(teacher.getSchool());
 		List<String> key = subDao.filter_cd(teacher.getSchool());
@@ -68,7 +70,7 @@ public class TestListStudentExecuteAction extends Action {
 		req.setAttribute("subject_set", map);
 		req.setAttribute("ent_year_set", entYearSet);//入学年度のlistをセット
 		req.setAttribute("tests", tests);
-		req.setAttribute("student_no", f4);
+		req.setAttribute("student", sDao.get(f4));
 
 		req.getRequestDispatcher("test_list_student.jsp").forward(req, res);
 	}

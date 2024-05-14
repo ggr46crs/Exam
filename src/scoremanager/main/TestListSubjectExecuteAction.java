@@ -47,7 +47,6 @@ public class TestListSubjectExecuteAction extends Action {
 		LocalDate todaysDate = LocalDate.now();// LcalDateインスタンスを取得
 		int year = todaysDate.getYear();// 現在の年を取得
 		List<Integer> entYearSet = new ArrayList<>();//入学年度のリストを初期化
-		List<TestListSubject> tests2 = new ArrayList<>();
 
 		//リクエストパラメータ―の取得 2
 		f1 = Integer.parseInt(req.getParameter("f1"));//入学年度
@@ -70,6 +69,7 @@ public class TestListSubjectExecuteAction extends Action {
 		for (int i = year - 10; i < year + 1; i++) {
 			entYearSet.add(i);
 		}
+
 		req.setAttribute("class_num_set", list1);//クラス番号のlistをセット
 		req.setAttribute("subject_set", map);
 		req.setAttribute("ent_year_set", entYearSet);//入学年度のlistをセット

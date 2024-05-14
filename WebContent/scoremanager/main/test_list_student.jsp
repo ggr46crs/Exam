@@ -12,9 +12,6 @@
 	<c:param name="content">
 		<section class="me-4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">学生管理</h2>
-			<div class="my-2 text-end px-4">
-				<a href="StudentCreate.action">成績参照</a>
-			</div>
 			<form method="get" action="TestListSubjectExecute.action">
 				<div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 					<div class="col-4">
@@ -71,7 +68,7 @@
 			</form>
 			<c:choose>
 			<c:when test="${tests.size()!=0}">
-				科目：${subject_name}
+				氏名：${student.name}(${student.no})
 				<table class="table table-hover">
 						<tr>
 							<th>科目名</th>
@@ -81,9 +78,9 @@
 						</tr>
 						<c:forEach var="test" items="${tests}">
 							<tr>
-								<td>${test.Sub_name}</td>
+								<td>${test.subjcetName}</td>
 								<td>${test.subjectCd}</td>
-								<td>${test.no}</td>
+								<td>${test.num}</td>
 								<td>${test.point}</td>
 							</tr>
 						</c:forEach>

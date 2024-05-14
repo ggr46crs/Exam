@@ -42,5 +42,4 @@
 			</form>
 		</section>
 	</c:param>
->>>>>>> branch 'master' of https://github.com/ggr46crs/Exam.git
 </c:import>

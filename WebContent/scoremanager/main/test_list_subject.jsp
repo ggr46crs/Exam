@@ -74,6 +74,7 @@
 							<th>入学年度</th>
 							<th>クラス</th>
 							<th>学生番号</th>
+							<th>名前</th>
 							<th>一回目</th>
 							<th>二回目</th>
 						</tr>
@@ -82,8 +83,9 @@
 								<td>${test.entYear}</td>
 								<td>${test.classNum}</td>
 								<td>${test.studentNo}</td>
-								<td>${test.point.get(1)}</td>
-								<td>${test.point.get(2)}</td>
+								<td>${test.studentName}</td>
+								<td>${test.getPoint(1)}</td>
+								<td>${test.getPoint(2)}</td>
 							</tr>
 						</c:forEach>
 					</table>
