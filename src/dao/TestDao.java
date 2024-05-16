@@ -137,6 +137,7 @@ public class TestDao extends Dao{
 			//プライベートステートメントを実行
 			statement.setString(4, school.getCd());
 			//プライベートステートメントを実行
+			System.out.println("★ statement -> " + statement);
 			rSet = statement.executeQuery();
 			//リストへの格納処理を実行
 			list = postFilter(rSet, school);
