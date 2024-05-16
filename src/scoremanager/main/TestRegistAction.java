@@ -89,6 +89,7 @@ public class TestRegistAction extends Action {
 		req.setAttribute("subject_cd_set", subjects);
 		req.setAttribute("no_set", noSet);
 		req.setAttribute("tests", tests);
+		System.out.println(" test -> " + tests);
 		//req.setAttribute("subjects", subjects);
 		//レスポンス値をセット 5
 		// リクエストに入学年度をセット

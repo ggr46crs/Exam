@@ -51,7 +51,7 @@ public class SubjectCreateExecuteAction extends Action {
 		//ビジネスロジック 4
 		//DBへデータ保存 5
 		//条件で手順4~5の内容が分岐
-		if (subject == null) {// 学生が未登録だった場合
+		if (subject == null && cd.length() == 3) {// 学生が未登録だった場合
 			// 学生インスタンスを初期化
 			subject = new Subject();
 			// インスタンスに値をセット
@@ -61,6 +61,8 @@ public class SubjectCreateExecuteAction extends Action {
 			//student.setSchool(((Teacher)session.getAttribute("user")).getSchool());
 			// 学生を保存
 			sDao.save(subject);
+		}else if(cd.length() != 3){//入力された学番がDBに保存されていた場合
+			errors.put("cd", "科目コードは３文字で入力してください");
 		} else {//入力された学番がDBに保存されていた場合
 			errors.put("cd", "科目コードが重複しています");
 		}

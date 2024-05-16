@@ -111,7 +111,7 @@ public class TestDao extends Dao{
 
 		return list;
 	}
-	public List<Test> filter(String f1, String classNum, Subject subject, String f4, School school) throws Exception {
+	public List<Test> filter(String entYear, String classNum, Subject subject, String f4, School school) throws Exception {
 		//リストを初期化
 		List<Test> list = new ArrayList<>();
 		//コネクションを確立
@@ -121,7 +121,7 @@ public class TestDao extends Dao{
 		//リザルトセット
 		ResultSet rSet = null;
 		//SQL文の条件
-		String condition = "inner join student on test.student_no = student.no where ent_year=? and test.class_num=? and subject_cd=? and test.school_cd=?";
+		String condition = "inner join student on test.student_no = student.no inner join subject on test.subject_cd = subject.cd where student.ent_year=? and test.class_num=? and subject.cd=? and test.school_cd=?";
 		//SQL文のソート
 		String order = " order by test.student_no asc";
 
@@ -129,7 +129,7 @@ public class TestDao extends Dao{
 			//プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement(baseSql + condition + order);
 			//プリペアードステートメントに学校コードをバインド
-			statement.setString(1, f1);
+			statement.setString(1, entYear);
 			//プリペアードステートメントに入学年度をバインド
 			statement.setString(2, classNum);
 			//プリペアードステートメントにクラス番号をバインド
