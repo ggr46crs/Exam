@@ -36,7 +36,7 @@ public class TestRegistAction extends Action {
 
 		int f1;//入学年度
 		String f2 = "";//クラス番号
-		String f3 = "";//科目コード
+		Subject f3;//科目コード
 		int f4;
 		String entYearStr="";//入力された入学年度
 		String classNum = "";//入力されたクラス番号
@@ -86,7 +86,7 @@ public class TestRegistAction extends Action {
 		f3 = req.getParameter("f3");//科目コード
 		f4 = Integer.parseInt(req.getParameter("f4"));//回数
 
-		tests = tDao.filter(f1,f2,f3,teacher.getSchool());
+		tests = tDao.filter(f1,f2,f3,f4,teacher.getSchool());
 
 		// リクエストに学年リストをセット
 		req.setAttribute("tests", tests);

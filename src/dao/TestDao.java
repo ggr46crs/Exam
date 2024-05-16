@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
+import bean.Subject;
 import bean.Test;
-import bean.TestListSubject;
+
 
 public class TestDao extends Dao{
 
@@ -18,14 +19,14 @@ public class TestDao extends Dao{
 
 
 
-	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
+	private List<Test> postFilter(ResultSet rSet,School school) throws Exception {
 		//リストを初期化
-		List<TestListSubject> list = new ArrayList<>();
+		List<Test> list = new ArrayList<>();
 		try {
 			//リザルトセットを全権操作
 			while (rSet.next()) {
 				//学生インスタンス
-				TestListSubject test = new TestListSubject();
+				Test test = new Test();
 				//学生インスタンスに検索結果をセット
 				test.setEntYear(rSet.getInt("ent_year"));
 				test.setStudentNo(rSet.getString("student_no"));
@@ -49,9 +50,9 @@ public class TestDao extends Dao{
 	}
 
 
-	public List<TestListSubject> filter(int ent_year, String classNum, String subject, School school) throws Exception {
+	public List<Test> filter(int ent_year, String classNum, Subject subject, int num, School school) throws Exception {
 		//リストを初期化
-		List<TestListSubject> list = new ArrayList<>();
+		List<Test> list = new ArrayList<>();
 		//コネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
@@ -59,7 +60,7 @@ public class TestDao extends Dao{
 		//リザルトセット
 		ResultSet rSet = null;
 		//SQL文の条件
-		String condition = "inner join student on test.student_no = student.no where ent_year=? and test.class_num=? and subject_cd=? and test.school_cd=?";
+		String condition = "inner join student on test.student_no = student.no inner join subject on test.subject_cd = subject.cd where ent_year=? and test.class_num=? and subject_name=? and test.school_cd=?";
 		//SQL文のソート
 		String order = " order by ent_year asc";
 
@@ -72,13 +73,13 @@ public class TestDao extends Dao{
 			//プリペアードステートメントに入学年度をバインド
 			statement.setString(2, classNum);
 			//プリペアードステートメントにクラス番号をバインド
-			statement.setString(3,subject);
+			statement.setString(3,subject.getName());
 
 			statement.setString(4, school.getCd());
 			//プライベートステートメントを実行
 			rSet = statement.executeQuery();
 			//リストへの格納処理を実行
-			list = postFilter(rSet);
+			list = postFilter(rSet, school);
 		} catch (Exception e) {
 			throw e;
 		} finally {
