@@ -1,34 +1,40 @@
 
+
 package bean;
 
 import java.io.Serializable;
 
 public class Test implements Serializable {
-	private String student_no;
-	private String subject_cd;
-	private String school_cd;
+	private Student student;
+	private String classNum;
+	private Subject subject;
+	private School school;
 	private Integer no;
 	private Integer point;
-	private String class_num;
-	private School school;
 
-	public String getStudentNo() {
-		return student_no;
+	public Student getStudent() {
+		return student;
 	}
-	public void setStudentNo(String student_no) {
-		this.student_no = student_no;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
-	public String getSubjectCd() {
-		return subject_cd;
+	public String getClassNum() {
+		return classNum;
 	}
-	public void setSubjectCd(String subject_cd) {
-		this.subject_cd = subject_cd;
+	public void setClassNum(String classNum) {
+		this.classNum = classNum;
 	}
-	public String getSchoolCd() {
-		return school_cd;
+	public Subject getSubject() {
+		return subject;
 	}
-	public void setSchoolCd(String school_cd) {
-		this.school_cd = school_cd;
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+	public School getSchool() {
+		return school;
+	}
+	public void setSchool(School school) {
+		this.school = school;
 	}
 	public Integer getNo() {
 		return no;
@@ -42,16 +48,5 @@ public class Test implements Serializable {
 	public void setPoint(Integer point) {
 		this.point = point;
 	}
-	public String getClassNum() {
-		return class_num;
-	}
-	public void setClassNum(String class_num) {
-		this.class_num = class_num;
-	}
-	public School getSchool() {
-		return school;
-	}
-	public void setSchool(School school) {
-		this.school = school;
-	}
 }
+

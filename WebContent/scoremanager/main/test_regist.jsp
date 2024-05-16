@@ -67,7 +67,7 @@
 			</form>
 			<c:choose>
 				<c:when test="${tests.size()>0}">
-					<div>検索結果:${students.size()}件</div>
+					<div>検索結果:${tests.size()}件</div>
 					<table class="table table-hover">
 						<tr>
 							<th>入学年度</th>

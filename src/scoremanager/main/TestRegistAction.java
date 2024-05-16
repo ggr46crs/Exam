@@ -31,13 +31,14 @@ public class TestRegistAction extends Action {
 		teacher.setPassword("password");
 		teacher.setSchool(school);
 
+		Subject subject = new Subject();
 		//HttpSession session = req.getSession();//セッション
 		//Teacher teacher = (Teacher)session.getAttribute("user");
 
-		int f1;//入学年度
+		String f1 = "";//入学年度
 		String f2 = "";//クラス番号
-		Subject f3;//科目コード
-		int f4;
+		String f3 = "";//科目コード
+		String f4 = "";
 		String entYearStr="";//入力された入学年度
 		String classNum = "";//入力されたクラス番号
 		int entYear = 0;// 入学年度
@@ -55,18 +56,20 @@ public class TestRegistAction extends Action {
 		ClassNumDao cNumDao = new ClassNumDao();// クラス番号Daoを初期化
 		Map<String, String> errors = new HashMap<>();//エラーメッセージ
 
+		f1 = req.getParameter("f1");//入学年度
+		f2 = req.getParameter("f2");//クラス番号
+		subject.setCd(req.getParameter("f3")); ;//科目コード
+		f4 = req.getParameter("f4");//回数
+		req.setAttribute("tests", tests);
+
+		tests = tDao.filter(f1,f2,subject,f4,teacher.getSchool());
+
 		//DBからデータ取得 3
 		// ログインユーザーの学校コードをもとにクラス番号の一覧を取得
 		List<String> cNumlist = cNumDao.filter(teacher.getSchool());
 		subjects = subDao.filter(teacher.getSchool());
 
 
-
-		//ビジネスロジック 4
-		if (nostr != null) {
-			//数値に変換
-			no = Integer.parseInt(nostr);
-		}
 		//リストを初期化
 		List<Integer> entYearSet = new ArrayList<>();
 		//10年前から1年後まで年をリストに追加
@@ -79,22 +82,16 @@ public class TestRegistAction extends Action {
 			noSet.add(i);
 		}
 
-		//レスポンス値をセット 5
-		// リクエストに入学年度をセット
-		f1 = Integer.parseInt(req.getParameter("f1"));//入学年度
-		f2 = req.getParameter("f2");//クラス番号
-		f3 = req.getParameter("f3");//科目コード
-		f4 = Integer.parseInt(req.getParameter("f4"));//回数
-
-		tests = tDao.filter(f1,f2,f3,f4,teacher.getSchool());
 
 		// リクエストに学年リストをセット
-		req.setAttribute("tests", tests);
 		req.setAttribute("ent_year_set", entYearSet);
 		req.setAttribute("class_num_set", cNumlist);
 		req.setAttribute("subject_cd_set", subjects);
 		req.setAttribute("no_set", noSet);
+		req.setAttribute("tests", tests);
 		//req.setAttribute("subjects", subjects);
+		//レスポンス値をセット 5
+		// リクエストに入学年度をセット
 		//JSPへフォワード 7
 		req.getRequestDispatcher("test_regist.jsp").forward(req, res);
 
