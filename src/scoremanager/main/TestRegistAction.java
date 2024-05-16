@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import bean.School;
 import bean.Subject;
 import bean.Teacher;
-import bean.TestListSubject;
+import bean.Test;
 import dao.ClassNumDao;
 import dao.SubjectDao;
 import dao.TestDao;
@@ -46,7 +46,7 @@ public class TestRegistAction extends Action {
 		String school_cd = "";
 		String nostr = "";
 		int no = 0;// 入学年度
-		List<TestListSubject> tests = null;// 学生リスト
+		List<Test> tests = null;// 学生リスト
 		List<Subject> subjects = null;// 学生リスト
 		LocalDate todaysDate = LocalDate.now();// LocalDateインスタンスを取得
 		int year = todaysDate.getYear();// 現在の年を取得
